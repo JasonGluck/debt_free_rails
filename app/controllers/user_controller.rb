@@ -5,21 +5,21 @@ class UserController < ApplicationController
   end
 
   def create
-    
+
     @user = User.new(user_params)
-    
+
     if @user.save
-      sessions[:user_id] = @user.id
+      sign_in(@user)
       redirect_to app_path
-    else 
+    else
       render :new
-    end 
+    end
 
   end
 
 
-private 
+private
   def user_params
       params.require(:user).permit(:name, :email, :password)
-  end 
+  end
 end
