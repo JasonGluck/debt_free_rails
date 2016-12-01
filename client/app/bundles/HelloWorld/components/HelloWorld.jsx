@@ -1,47 +1,29 @@
 import React, { PropTypes } from 'react';
 
-export default class HelloWorld extends React.Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired, // this is passed from the Rails view
-  };
+// Simple example of a React "dumb" component
+const HelloWorld = ({ name, updateName }) => (
+  <div className="container">
+    <h3>
+      Hello, {name}!
+    </h3>
+    <hr />
+    <form className="form-horizontal">
+      <label htmlFor="name">
+        Say hello to:
+      </label>
+      <input
+        type="text" value={name} id="name"
+        onChange={(e) => updateName(e.target.value)}
+      />
+    </form>
+  </div>
+);
 
-  /**
-   * @param props - Comes from your rails view.
-   * @param _railsContext - Comes from React on Rails
-   */
-  constructor(props, _railsContext) {
-    super(props);
+HelloWorld.propTypes = {
+  // If you have lots of data or action properties, you should consider grouping them by
+  // passing two properties: "data" and "actions".
+  updateName: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
-    // How to set initial state in ES6 class syntax
-    // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { name: this.props.name };
-  }
-
-  updateName = (name) => {
-    this.setState({ name });
-  };
-
-  render() {
-    debugger
-    return (
-      <div>
-        <h3>
-          Hello, {this.state.name}
-        </h3>
-
-        <br />
-        <form>
-          <label htmlFor="name">
-            Say hello to:
-          </label>
-          <input
-            id="name"
-            type="text"
-            value={this.state.name}
-            onChange={(e) => this.updateName(e.target.value)}
-          />
-        </form>
-      </div>
-    );
-  }
-}
+export default HelloWorld;

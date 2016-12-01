@@ -1,13 +1,27 @@
-// Simple example of a React "smart" component
-
-import { connect } from 'react-redux';
+import React, { PropTypes } from 'react';
 import HelloWorld from '../components/HelloWorld';
-import * as actions from '../actions/helloWorldActionCreators';
 
-// Which part of the Redux global state does our component want to receive as props?
-const mapStateToProps = (state) => ({ name: state.name });
+// Simple example of a React "smart" component
+export default class HelloWorldContainer extends React.Component {
+  static propTypes = {
+    name: PropTypes.string.isRequired, // this is passed from the Rails view
+  };
 
-// Don't forget to actually use connect!
-// Note that we don't export HelloWorld, but the redux "connected" version of it.
-// See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, actions)(HelloWorld);
+  constructor(props) {
+    super(props);
+
+    // How to set initial state in ES6 class syntax
+    // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
+    this.state = { name: this.props.name };
+  }
+
+  updateName = (name) => { 
+    this.setState({ name }); };
+
+  render() {
+    debugger
+    return (
+      <HelloWorld name={this.state.name} updateName={this.updateName} />
+    );
+  }
+}
